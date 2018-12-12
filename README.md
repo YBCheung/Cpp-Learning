@@ -112,19 +112,55 @@
 	void abc(const *p)//不希望p内容被改变。   
 24.对象   
 （1）private类型：  
-	外部不能访问和修改，只能通过调用内部public函数修改访问。   
-	用途：一旦private类型改变，不需要满程序找相关地方，只需要更改内部调用函数。   
-（2）构造函数    
-	class Complex   
+	外部不能访问和修改，只能通过调用内部public函数修改访问。  
+	用途：一旦private类型改变，不需要满程序找相关地方，只需要更改内部调用函数。  
+（2）构造函数  
+	class Complex  
 	{  
-	private：（参数缺省则默认为private）    
-		real;imag   
-	public:   
-		Complex(int a,int b = 0)	  
+	private：（参数缺省则默认为private）  
+		int real,int imag;  
+	public:  
+		Complex(int a,int b = 0);  
+		Complex(Complex c1,Complex c2);   //可有多个构造函数，根据形参类型匹配对应函数。  
+	Complex(const Complex & c)    
+	//复制构造函数，要是不写也会默认生成复制。  
+	//不可另外构造“Complex(Complex c1),与构造函数冲突”。  
+	//只要构造函数有类的形参，就会跑一次复制构造函数（最好别瞎自定义）  
+	//当类中成员有指针变量、类中有动态内存分配时常常需要用户自己定义拷贝构造函数  
+	{  
+		real = c.real;  
+		imag= c.imag;  
+		cout<<"Copy successfully";  
+	}  
+  
 	}   
-	Complex::Complex(int a,int b)   
-	{   
-		real = a;imag = b;   
-	}    
-   
-	使用：Complex a1(10);   
+	Complex::Complex(int a,int b) //构造函数直接对类进行初始化  
+	{  
+		real = a;imag = b;  
+	}  
+	Complex::ComplexComplex c1,Complex c2) //构造函数直接对类进行初始化  
+	{  
+		real = c1.real+c2.real;  
+		imag = c1.imag+c2.imag;  
+	}  
+	  
+	使用：Complex c1(10), c2(3,2);  
+	Complex *a = new Complex(2,3);  
+ 	Complex(c1, c2);  
+	Complex c3(c2);  //复制构造函数  
+	  
+25.auto  
+	auto  
+  
+auto可以表示任何类型，是c++11中的一个关键字符号，可以使得代码简洁.    
+	不用关心具体的类型，类型在编译器编译的时候决定：  
+  
+如：    
+	auto a = 5; 	// int  
+	auto b = 5.0f;	// float  
+	auto c = 5.0;	// double    
+	std::vector<int> name_list;  
+	auto iter = name_list.begin(); // 容器迭代器     
+	std::cout << a << b << c << endl;    
+	特别是容器迭代器，在没有auto之前，我们只能不厌其烦的这样定义：  
+	std::vector<int>::iterator it = name_list.begin()    
