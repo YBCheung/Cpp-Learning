@@ -6,32 +6,30 @@ using std::endl;
 class Complex{
 	private: 
 		float real, imag;  //参数缺省则默认为private）
+		int static TotalNum;  //静态变量
 	public:
+		static void ShowTotalNum();
 		Complex(void);
 		Complex(float a,float b=0);
 		Complex(const Complex c1,const Complex c2);   //可有多个构造函数，根据形参类型匹配对应函数。
-		Display();
-		Complex(const Complex & c)  
-		//复制构造函数，要是不写也会默认生成复制。
-		//不可另外构造“Complex(Complex c1),与构造函数冲突”。
-		//调用复制构造函数情形：（最好别瞎自定义）
-		//1、构造函数有类的形参
-		//2、赋值语句，Complex c1 = c2
-		//当类中成员有指针变量、类中有动态内存分配时常常需要用户自己定义拷贝构造函数
-		{
-			real = c.real;
-			imag= c.imag;
-			cout<<"Copy successfully:"<<real<<"+"<<imag<<"j"<<endl;
-		}
+		void Display();
+		Complex(const Complex & c);
 		~Complex()     
 		//析构函数，每次类消亡（子函数跑完形参消亡；赋值时临时类消亡；main函数结束类消亡；调用delete函数；数组类每个元素；每个类）
 		//可写入释放动态指针语句
 		{
+			TotalNum--;
 			cout<<"destruction"<<endl;
 		}
 };
+int Complex::TotalNum = 0;
+void Complex::ShowTotalNum()
+{
+	cout<<TotalNum<<endl;
+}
 Complex::Complex(void) //构造函数直接对类进行初始化
 {
+	TotalNum++;	
 	// cout<<"real=";
  //    cin>>real;
  //    fflush(stdin);
@@ -41,24 +39,40 @@ Complex::Complex(void) //构造函数直接对类进行初始化
 }
 Complex::Complex(float a,float b) //构造函数直接对类进行初始化
 {
+	TotalNum++;	
 	real = a;imag = b;
 }
 Complex::Complex(const Complex c1,const Complex c2) //构造函数直接对类进行初始化
 {
+	TotalNum++;	
 	real = c1.real+c2.real;
 	imag = c1.imag+c2.imag;
 }
-Complex::Display(void)
+Complex::Complex(const Complex & c)  
+		//复制构造函数，要是不写也会默认生成复制。
+		//不可另外构造“Complex(Complex c1),与构造函数冲突”。
+		//调用复制构造函数情形：（最好别瞎自定义）
+		//1、构造函数有类的形参
+		//2、赋值语句，Complex c1 = c2
+		//当类中成员有指针变量、类中有动态内存分配时常常需要用户自己定义拷贝构造函数
+		{
+			real = c.real;
+			imag= c.imag;
+			TotalNum++;
+			cout<<"Copy successfully:"<<real<<"+"<<imag<<"j"<<endl;
+		}
+void Complex::Display(void)
 {	
 	cout<<real<<'+'<<imag<<'j'<<endl;
-	return 0;
+	ShowTotalNum();
 }
 
-int main(int argc, char const *argv[])
+int main()
 {	
 	cout<<"Line 1"<<endl;
+	//Complex c1 = 1;  
 	Complex c1;
-	c1 = 6;  //临时类，调用析构函数
+	c1 = 1;  //不要这么写，会额外调用析构函数??为什么呢？因为有了临时类。直接写Line1第一句，后面的别写。
 	c1.Display();
 	cout<<"Line 2"<<endl;
 	Complex *c2 = new Complex(1,2);   // 动态指针生成类
@@ -81,5 +95,6 @@ int main(int argc, char const *argv[])
 	psum1 = NULL;  //动态指针用完要指向NULL（0）
 	cout<<"Line 8"<<endl;
 	//c1,c3,array[2]消亡调用析构函数
+	Complex::ShowTotalNum();
 	return 0;
 }
