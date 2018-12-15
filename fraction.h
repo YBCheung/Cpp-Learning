@@ -30,7 +30,7 @@ public:
 	friend fraction operator+(fraction a,fraction b);
 	friend fraction operator*(fraction a,fraction b);
 	friend fraction operator/(fraction a,fraction b);
-//	fraction operator++(int)   //���߽Կ� 
+//	fraction operator++(int)   //¶þÕß½Ô¿É 
 //	{
 //		num+=den;
 //		return fraction(num-den,den);
@@ -131,4 +131,4 @@ inline fraction operator--(fraction& f,int)
 	f.num-=f.den;
 	return fraction(f.num+f.den,f.den);
 }
-#endif
+#endif 
