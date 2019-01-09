@@ -14,7 +14,7 @@ private:
 	int num;
 	int den;
 public:
-	fraction(int a,int b=1);
+	fraction(int a=0,int b=1);
 	~fraction(){};
 	void Display();
 	fraction operator-();
