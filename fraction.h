@@ -1,3 +1,8 @@
+/********************说明********************/
+/*
+//此乃分数的类是也，方便地加减乘除，约分，赋值等
+*/
+
 #ifndef fraction_H
 #define fraction_H
 #include <iostream>
@@ -30,17 +35,6 @@ public:
 	friend fraction operator+(fraction a,fraction b);
 	friend fraction operator*(fraction a,fraction b);
 	friend fraction operator/(fraction a,fraction b);
-//	fraction operator++(int)   //¶þÕß½Ô¿É 
-//	{
-//		num+=den;
-//		return fraction(num-den,den);
-//	}
-//	fraction operator--(int)
-//	{
-//		num-=den;
-//		return fraction(num+den,den);
-//	}
-};
 
 int gcd(int a,int b)
 {
